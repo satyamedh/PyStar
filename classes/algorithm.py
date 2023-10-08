@@ -1,9 +1,11 @@
 from classes.grid import AStarGrid as Grid
+from classes.node import AStarNode as Node
 from typing import List
 from classes.exceptions import InvalidBaseGrid
 from classes.datatypes.location import Location
 from classes.exceptions import NoPathFound
 import copy
+
 
 class AStar:
     def __init__(self):
@@ -62,45 +64,41 @@ class AStar:
         # Add the start node to the open list
         self.OPEN.append(self.GRID.get_node(self.GRID.START))
 
+        # Get the end node
+        end_node = self.GRID.get_node(self.GRID.END)
+
         # Loop until the open list is empty
-        while len(self.OPEN):
-            # Get the node with the lowest f cost
+        while len(self.OPEN) > 0:
+            # Sort the open list
             self.sort_open()
-            current_node = self.OPEN[0]
+            # Get the node with the lowest f cost
+            current = self.OPEN[0]
+            self.OPEN.remove(current)
+            self.CLOSED.append(current)
 
-            # Remove the current node from the open list and add it to the closed list
-            self.OPEN.remove(current_node)
-            self.CLOSED.append(current_node)
-
-            # Check if the current node is the end node
-            if current_node.END:
-                # Return the path from the end node to the start node
+            if current == end_node:
+                # We have found the end node
                 self.solved = True
-                self.solution = self.GRID.get_path(current_node)
+                self.solution = self.GRID.get_path(current)
                 return self.solution
 
             # Get the neighbors of the current node
-            neighbors = self.GRID.get_neighbors(current_node)
-
-            # Loop through the neighbors
+            neighbors: list[Node] = self.GRID.get_neighbors(current)
             for neighbor in neighbors:
-                # Check if the neighbor is in the closed list
-                if neighbor in self.CLOSED:
+                # Check if the neighbor is in the closed list, or if it is an obstacle
+                if neighbor in self.CLOSED or neighbor.OBSTACLE:
                     continue
 
-                # Calculate the costs of the neighbor
-                neighbor.calculate_costs(self.GRID.START, self.GRID.END)
-
-                # Check if the neighbor is in the open list
-                if neighbor in self.OPEN:
-                    # Check if the neighbor has a lower g cost than the current node
-                    if neighbor.g < current_node.g:
-                        # Set the parent of the neighbor to the current node
-                        neighbor.parent = current_node.LOCATION
-                else:
-                    # Add the neighbor to the open list and set the parent to the current node
-                    self.OPEN.append(neighbor)
-                    neighbor.parent = current_node.LOCATION
+                    # check if the neighbor already has a parent, and if it does, check if the current node is a
+                    # better parent
+                if neighbor.parent.NOT_SET or neighbor.g > current.g + 1:
+                    # Set the parent of the neighbor to the current node
+                    neighbor.parent = current.LOCATION
+                    # Calculate the costs of the neighbor
+                    neighbor.calculate_costs(self.GRID.START, self.GRID.END)
+                    # Add the neighbor to the open list if it is not already in it
+                    if neighbor not in self.OPEN:
+                        self.OPEN.append(neighbor)
 
         # Raise an exception if no path was found
         raise NoPathFound("No path found")
@@ -120,9 +118,3 @@ class AStar:
             for location in self.solution:
                 grid = grid.replace(str(location), "#")
             return grid
-
-
-
-
-
-
