@@ -1,23 +1,35 @@
 from classes.algorithm import AStar
 from classes.datatypes.location import Location
 
-# 3x3 grid with no obstacles
+# An empty 15x15 grid
 SAMPLE_GRID = [
-    [0, 0, 2],
-    [0, 1, 0],
-    [3, 0, 0]
+    [2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, ],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3, ],
 ]
 
 algo = AStar()
 
-algo.populate_grid(SAMPLE_GRID)
+algo.populate_grid(SAMPLE_GRID.copy())
 print(algo.GRID)
 
 solution = algo.pathfind()
 print([str(node) for node in solution])
 
 # visualize the solution using pygame. Convert the 1s to a black square and the 0s to a white square. Set all the
-# values in the solution to a yellow square.
+# values in the solution to a red square. The start and end nodes are blue squares.
 
 import pygame
 
@@ -32,7 +44,8 @@ screen = pygame.display.set_mode((maze_width, maze_height))
 # colors
 white = (255, 255, 255)
 black = (0, 0, 0)
-yellow = (255, 255, 0)
+red = (255, 0, 0)
+blue = (0, 0, 255)
 
 # game loop
 running = True
@@ -44,7 +57,8 @@ while running:
     # draw the maze
     for y in range(len(SAMPLE_GRID)):
         for x in range(len(SAMPLE_GRID[y])):
-            color = (yellow if Location(x, y) in solution else (white if SAMPLE_GRID[y][x] == 0 else black))
+            color = (blue if (SAMPLE_GRID[y][x] in [2, 3]) else (
+                red if Location(x, y) in solution else (white if SAMPLE_GRID[y][x] == 0 else black)))
             pygame.draw.rect(screen, color, (x * cell_size, y * cell_size, cell_size, cell_size))
 
     pygame.display.flip()

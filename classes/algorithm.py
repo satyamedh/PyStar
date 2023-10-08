@@ -3,6 +3,7 @@ from typing import List
 from classes.exceptions import InvalidBaseGrid
 from classes.datatypes.location import Location
 from classes.exceptions import NoPathFound
+import copy
 
 class AStar:
     def __init__(self):
@@ -15,6 +16,9 @@ class AStar:
     def populate_grid(self, grid: List[List[int]]):
         # The grid is a 2D list of integers, where 0 is a valid node and 1 is an obstacle.
         # The start node is represented by a 2, and the end node is represented by a 3.
+
+        # We need to make a copy of the grid so that we don't modify the original grid
+        grid = copy.deepcopy(grid)
 
         # Check if the grid is valid by checking if it is a 2D list
         if not isinstance(grid, list) or not isinstance(grid[0], list):
