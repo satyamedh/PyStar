@@ -20,3 +20,6 @@ class NoParent(Exception):
 
 class InvalidBaseGrid(Exception):
     pass
+
+class NoPathFound(Exception):
+    pass

@@ -14,3 +14,6 @@ algo = AStar()
 
 algo.populate_grid(SAMPLE_GRID)
 print(algo.GRID)
+
+solution = algo.pathfind()
+print(solution)

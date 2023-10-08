@@ -33,11 +33,12 @@ class AStarGrid:
         # Get the neighbors of the node
         for y in range(node.LOCATION.Y - 1, node.LOCATION.Y + 2):
             for x in range(node.LOCATION.X - 1, node.LOCATION.X + 2):
-                # Get the current node
-                current_node = self.get_node(Location(x, y))
+                try:
+                    current_node = self.get_node(Location(x, y))
+                except InvalidLocation:
+                    continue
                 # Check if the node is valid, not an obstacle, and not the current node
-                if (0 <= x < len(self.GRID[0]) and 0 <= y < len(self.GRID)
-                        and current_node != node and not current_node.OBSTACLE):
+                if current_node.LOCATION != node.LOCATION and not current_node.OBSTACLE:
                     neighbors.append(current_node)
         return neighbors
 
