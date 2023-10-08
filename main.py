@@ -12,7 +12,9 @@ SAMPLE_GRID = [
     [0, 1, 0, 0, 0, 1, 0, 0, 0],
 ]
 
-algo = AStar()
+ALLOW_DIAGONAL = True
+
+algo = AStar(ALLOW_DIAGONAL)
 
 algo.populate_grid(SAMPLE_GRID)
 print(algo.GRID)

@@ -8,10 +8,12 @@ import copy
 
 
 class AStar:
-    def __init__(self):
+    def __init__(self, allow_diagonal: bool = False):
         self.GRID: Grid = None
         self.OPEN = []
         self.CLOSED = []
+        self.ALLOW_DIAGONAL = allow_diagonal
+
         self.solved = False
         self.solution: List[Location] = []
 
@@ -19,6 +21,7 @@ class AStar:
         # Populating the grid resets the solution flags and the open and closed lists
         self.OPEN = []
         self.CLOSED = []
+
         self.solved = False
         self.solution = []
 
@@ -108,7 +111,7 @@ class AStar:
                 return self.solution
 
             # Get the neighbors of the current node
-            neighbors: list[Node] = self.GRID.get_neighbors(current)
+            neighbors: list[Node] = self.GRID.get_neighbors(current, self.ALLOW_DIAGONAL)
             for neighbor in neighbors:
                 # Check if the neighbor is in the closed list, or if it is an obstacle
                 if neighbor in self.CLOSED or neighbor.OBSTACLE:

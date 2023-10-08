@@ -28,11 +28,14 @@ class AStarGrid:
         else:
             raise InvalidLocation(f"Location {location} is invalid")
 
-    def get_neighbors(self, node: Node):
+    def get_neighbors(self, node: Node, allow_diagonal: bool = False):
         neighbors = []
         # Get the neighbors of the node
         for y in range(node.LOCATION.Y - 1, node.LOCATION.Y + 2):
             for x in range(node.LOCATION.X - 1, node.LOCATION.X + 2):
+                # Check if the node is diagonal to the current node
+                if not allow_diagonal and not (x == node.LOCATION.X or y == node.LOCATION.Y):
+                    continue
                 try:
                     current_node = self.get_node(Location(x, y))
                 except InvalidLocation:
