@@ -1,4 +1,4 @@
-from src.classes.datatypes.location import Location
+from classes.datatypes.location import Location
 
 
 class AStarNode:
