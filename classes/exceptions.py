@@ -16,3 +16,7 @@ class InvalidOperation(Exception):
 
 class NoParent(Exception):
     pass
+
+
+class InvalidBaseGrid(Exception):
+    pass

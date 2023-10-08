@@ -11,6 +11,12 @@ class Location:
         if self.NOT_SET:
             raise LocationNotSet("Location not set")
 
+    def set_location(self, x: int, y: int):
+        self.X = x
+        self.Y = y
+
+        self.NOT_SET = False
+
     def distance(self, other):
         self.check_not_set()
         other.check_not_set()
