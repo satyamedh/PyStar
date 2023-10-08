@@ -1,6 +1,5 @@
 from classes.algorithm import AStar
 
-
 SAMPLE_GRID = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -17,3 +16,6 @@ print(algo.GRID)
 
 solution = algo.pathfind()
 print(solution)
+
+# Output:
+print(str(algo))

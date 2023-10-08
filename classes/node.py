@@ -39,4 +39,4 @@ class AStarNode:
 
     def __str__(self):
         # The string representation of the node is the string representation of the location and the f cost
-        return f"({self.LOCATION}) - {self.f}"
+        return f"{int(self.OBSTACLE)}"

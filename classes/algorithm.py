@@ -6,9 +6,11 @@ from classes.exceptions import NoPathFound
 
 class AStar:
     def __init__(self):
-        self.GRID = None
+        self.GRID: Grid = None
         self.OPEN = []
         self.CLOSED = []
+        self.solved = False
+        self.solution: List[Location] = []
 
     def populate_grid(self, grid: List[List[int]]):
         # The grid is a 2D list of integers, where 0 is a valid node and 1 is an obstacle.
@@ -69,7 +71,9 @@ class AStar:
             # Check if the current node is the end node
             if current_node.END:
                 # Return the path from the end node to the start node
-                return self.GRID.get_path(current_node)
+                self.solved = True
+                self.solution = self.GRID.get_path(current_node)
+                return self.solution
 
             # Get the neighbors of the current node
             neighbors = self.GRID.get_neighbors(current_node)
@@ -96,6 +100,22 @@ class AStar:
 
         # Raise an exception if no path was found
         raise NoPathFound("No path found")
+
+    def __str__(self):
+        # There are three possible states for the algorithm:
+        # 1. No grid has been populated - return "No grid populated"
+        # 2. The grid has been populated but not solved - return the grid
+        # 3. The grid has been populated and solved - return the grid with the path.
+        # The solution is overlayed on the grid by replacing the values of the path with a #
+        if self.GRID is None:
+            return "No grid populated"
+        elif not self.solved:
+            return str(self.GRID)
+        else:
+            grid = str(self.GRID)
+            for location in self.solution:
+                grid = grid.replace(str(location), "#")
+            return grid
 
 
 

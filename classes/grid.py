@@ -50,3 +50,7 @@ class AStarGrid:
             node = self.get_node(node.parent)
         path.append(self.START)
         return path
+
+    def __str__(self):
+        # Return the string representation of the grid as a 2D matrix of the node type
+        return "\n".join([" ".join([str(node) for node in row]) for row in self.GRID])
