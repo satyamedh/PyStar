@@ -2,11 +2,13 @@ from src.classes.datatypes.location import Location
 
 
 class AStarNode:
-    def __init__(self, location: Location, start: bool = False, end: bool = False):
+    def __init__(self, node_id: int, location: Location, obstacle: bool = False, start: bool = False, end: bool = False):
         # Constants
         self.LOCATION = location
         self.START = start
         self.END = end
+        self.OBSTACLE = obstacle
+        self.ID = node_id
 
         # Costs
         self.g = 0
@@ -17,6 +19,8 @@ class AStarNode:
         self.parent: Location = Location(-1, -1, True)
 
     def calculate_costs(self, start_node: Location, end_node: Location):
+        if self.OBSTACLE:
+            raise Exception(f"Cannot calculate costs for an obstacle {self.LOCATION} - {self.ID}")
         # Calculate the g cost
         self.g = self.LOCATION.distance(start_node)
 
