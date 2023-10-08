@@ -16,6 +16,16 @@ class AStarNode:
         # Parent
         self.parent: Location = Location(-1, -1, True)
 
+    def calculate_costs(self, start_node: Location, end_node: Location):
+        # Calculate the g cost
+        self.g = self.LOCATION.distance(start_node)
+
+        # Calculate the h cost
+        self.h = self.LOCATION.distance(end_node)
+
+        # Calculate the f cost
+        self.f = self.g + self.h
+
     def __eq__(self, other):
         return self.LOCATION == other.LOCATION
 
