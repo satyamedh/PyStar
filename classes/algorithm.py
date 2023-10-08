@@ -88,14 +88,13 @@ class AStar:
                 # Check if the neighbor is in the closed list, or if it is an obstacle
                 if neighbor in self.CLOSED or neighbor.OBSTACLE:
                     continue
-
-                    # check if the neighbor already has a parent, and if it does, check if the current node is a
-                    # better parent
+                # check if the neighbor already has a parent, and if it does, check if the current node is a
+                # better parent
                 if neighbor.parent.NOT_SET or neighbor.g > current.g + 1:
                     # Set the parent of the neighbor to the current node
                     neighbor.parent = current.LOCATION
                     # Calculate the costs of the neighbor
-                    neighbor.calculate_costs(self.GRID.START, self.GRID.END)
+                    neighbor.calculate_costs(current.g, self.GRID.END)
                     # Add the neighbor to the open list if it is not already in it
                     if neighbor not in self.OPEN:
                         self.OPEN.append(neighbor)
