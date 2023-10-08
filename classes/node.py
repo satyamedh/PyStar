@@ -48,6 +48,25 @@ class AStarNode:
     def __eq__(self, other):
         return self.LOCATION == other.LOCATION
 
-    def __str__(self):
+    def __int__(self):
         # The string representation of the node is the string representation of the location and the f cost
-        return f"{int(self.OBSTACLE)}"
+        # 0 - traversable
+        # 1 - obstacle
+        # 2 - start
+        # 3 - end
+        # 4 - closed
+        # 5 - solution
+        # 6 - open
+
+        code = 0
+        if self.OBSTACLE:
+            code = 1
+        elif self.START:
+            code = 2
+        elif self.END:
+            code = 3
+        if self.OPEN:
+            code = 6
+        if self.CLOSED:
+            code = 4
+        return code

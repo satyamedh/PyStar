@@ -1,6 +1,7 @@
 from classes.datatypes.location import Location
 from classes.node import AStarNode as Node
-from classes.exceptions import NodeDoesntExist, InvalidLocation
+from classes.exceptions import InvalidLocation
+
 
 class AStarGrid:
     def __init__(self, start_location: Location, end_location: Location, start_grid: list[list[int]]):
