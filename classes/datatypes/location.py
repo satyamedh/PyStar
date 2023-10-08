@@ -1,4 +1,5 @@
 import math
+from classes.exceptions import LocationNotSet
 
 class Location:
     def __init__(self, x: int, y: int, not_set: bool = False):
@@ -8,7 +9,7 @@ class Location:
 
     def check_not_set(self):
         if self.NOT_SET:
-            raise Exception("Location not set")
+            raise LocationNotSet("Location not set")
 
     def distance(self, other):
         self.check_not_set()

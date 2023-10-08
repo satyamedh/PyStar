@@ -1,6 +1,6 @@
 from classes.datatypes.location import Location
 from classes.node import AStarNode as Node
-
+from classes.exceptions import NodeDoesntExist, InvalidLocation
 
 class AStarGrid:
     def __init__(self, start_location: Location, end_location: Location, start_grid: list[list[int]]):
@@ -26,7 +26,7 @@ class AStarGrid:
         if 0 <= location.X < len(self.GRID[0]) and 0 <= location.Y < len(self.GRID):
             return self.GRID[location.Y][location.X]
         else:
-            raise Exception(f"Location {location} is not valid")
+            raise InvalidLocation(f"Location {location} is invalid")
 
     def get_neighbors(self, node: Node):
         neighbors = []
@@ -40,3 +40,12 @@ class AStarGrid:
                         and current_node != node and not current_node.OBSTACLE):
                     neighbors.append(current_node)
         return neighbors
+
+    def get_path(self, node: Node):
+        path = []
+        # Get the path from the given node to the start node
+        while node.LOCATION != self.START:
+            path.append(node.LOCATION)
+            node = self.get_node(node.parent)
+        path.append(self.START)
+        return path

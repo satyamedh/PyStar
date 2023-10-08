@@ -1,5 +1,5 @@
 from classes.datatypes.location import Location
-
+from classes.exceptions import InvalidOperation, NoParent
 
 class AStarNode:
     def __init__(self, node_id: int, location: Location, obstacle: bool = False, start: bool = False, end: bool = False):
@@ -20,7 +20,7 @@ class AStarNode:
 
     def calculate_costs(self, start_node: Location, end_node: Location):
         if self.OBSTACLE:
-            raise Exception(f"Cannot calculate costs for an obstacle {self.LOCATION} - {self.ID}")
+            raise InvalidOperation(f"Cannot calculate costs for an obstacle {self.LOCATION} - {self.ID}")
         # Calculate the g cost
         self.g = self.LOCATION.distance(start_node)
 
@@ -29,6 +29,10 @@ class AStarNode:
 
         # Calculate the f cost
         self.f = self.g + self.h
+
+    def get_parent(self):
+        if self.parent.NOT_SET:
+            raise NoParent(f"Node {self.ID} at ({self.LOCATION}) is an orphan!")
 
     def __eq__(self, other):
         return self.LOCATION == other.LOCATION
