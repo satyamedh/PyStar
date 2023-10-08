@@ -24,15 +24,16 @@ class AStar:
         for y in range(len(grid)):
             for x in range(len(grid[y])):
                 if grid[y][x] not in [0, 1]:
+                    # Check if the value is the start or end node and set the location accordingly
+                    if grid[y][x] == 2:
+                        start.set_location(x, y)
+                        grid[y][x] = 0
+                        continue
+                    elif grid[y][x] == 3:
+                        end.set_location(x, y)
+                        grid[y][x] = 0
+                        continue
                     raise InvalidBaseGrid(f"Invalid value {grid[y][x]} at ({x}, {y})")
-                elif grid[y][x] == 2:
-                    # We found the start node
-                    start.set_location(x, y)
-                    grid[y][x] = 0
-                elif grid[y][x] == 3:
-                    # We found the end node
-                    end.set_location(x, y)
-                    grid[y][x] = 0
 
         # Make sure the start and end nodes were found
         if start.NOT_SET:
