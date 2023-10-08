@@ -16,6 +16,12 @@ class AStar:
         self.solution: List[Location] = []
 
     def populate_grid(self, grid: List[List[int]]):
+        # Populating the grid resets the solution flags and the open and closed lists
+        self.OPEN = []
+        self.CLOSED = []
+        self.solved = False
+        self.solution = []
+
         # The grid is a 2D list of integers, where 0 is a valid node and 1 is an obstacle.
         # The start node is represented by a 2, and the end node is represented by a 3.
 
@@ -56,13 +62,28 @@ class AStar:
         # Sort the open list by f cost
         self.OPEN.sort(key=lambda node: node.f)
 
+    def open_node(self, node: Node):
+        # Add the node to the open list
+        self.OPEN.append(node)
+        node.OPEN = True
+
+    def close_node(self, node: Node):
+        # Add the node to the closed list
+        self.CLOSED.append(node)
+        self.OPEN.remove(node)
+        node.CLOSED = True
+
     def pathfind(self):
+        # Return the solution if it has already been found
+        if self.solved:
+            return self.solution
+
         # Make sure the grid is populated
         if self.GRID is None:
             raise Exception("Grid not populated")
 
         # Add the start node to the open list
-        self.OPEN.append(self.GRID.get_node(self.GRID.START))
+        self.open_node(self.GRID.get_node(self.GRID.START))
 
         # Get the end node
         end_node = self.GRID.get_node(self.GRID.END)
@@ -73,13 +94,17 @@ class AStar:
             self.sort_open()
             # Get the node with the lowest f cost
             current = self.OPEN[0]
-            self.OPEN.remove(current)
-            self.CLOSED.append(current)
+            self.close_node(current)
 
             if current == end_node:
                 # We have found the end node
                 self.solved = True
                 self.solution = self.GRID.get_path(current)
+
+                # Overlay the solution on the grid, using 5 to represent the solution
+                for location in self.solution:
+                    self.GRID.GRID[location.Y][location.X] = 5
+
                 return self.solution
 
             # Get the neighbors of the current node
@@ -97,7 +122,7 @@ class AStar:
                     neighbor.calculate_costs(current.g, self.GRID.END)
                     # Add the neighbor to the open list if it is not already in it
                     if neighbor not in self.OPEN:
-                        self.OPEN.append(neighbor)
+                        self.open_node(neighbor)
 
         # Raise an exception if no path was found
         raise NoPathFound("No path found")
@@ -110,10 +135,5 @@ class AStar:
         # The solution is overlayed on the grid by replacing the values of the path with a #
         if self.GRID is None:
             return "No grid populated"
-        elif not self.solved:
-            return str(self.GRID)
         else:
-            grid = str(self.GRID)
-            for location in self.solution:
-                grid = grid.replace(str(location), "#")
-            return grid
+            return str(self.GRID)

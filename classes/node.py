@@ -11,6 +11,8 @@ class AStarNode:
         self.END = end
         self.OBSTACLE = obstacle
         self.ID = node_id
+        self.OPEN = False
+        self.CLOSED = False
 
         # Costs
         self.g = 0

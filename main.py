@@ -20,8 +20,14 @@ print(algo.GRID)
 solution = algo.pathfind()
 print([str(node) for node in solution])
 
-# visualize the solution using pygame. Convert the 1s to a black square and the 0s to a white square. Set all the
-# values in the solution to a red square. The start and end nodes are blue squares.
+# visualize the solution using pygame.
+# white = traversable
+# black = obstacle
+# red = closed
+# green = open
+# blue = start/end
+# yellow = solution
+
 pygame.init()
 
 cell_size = 10  # adjust this based on maze size
