@@ -1,4 +1,4 @@
-# A-star--python
+# PyStar
 
 an A* algorithm implementation in python.
 
