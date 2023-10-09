@@ -12,5 +12,5 @@ Yeah just follow the GNU GPL v3 license.
 ## TODO
 - [ ] Add documentation
 - [ ] Add unit tests
-- [ ] Add more examples
+- [x] Add more examples
 

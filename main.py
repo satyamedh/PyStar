@@ -8,12 +8,12 @@ ALLOW_DIAGONAL = True
 
 algo = AStar(ALLOW_DIAGONAL, True)
 
-GRID_X = 1000
-GRID_Y = 1000
+GRID_X = 100
+GRID_Y = 100
 
 while True:
     # create a random grid
-    SAMPLE_GRID = [[random.choice([0, 0, 1, 1]) for _ in range(GRID_X)] for _ in range(GRID_Y)]
+    SAMPLE_GRID = [[random.choice([0, 1]) for _ in range(GRID_X)] for _ in range(GRID_Y)]
     SAMPLE_GRID[0][0] = 2
     SAMPLE_GRID[-1][-1] = 3
 
@@ -23,7 +23,7 @@ while True:
         solution = algo.pathfind()
         break
     except NoPathFound:
-        print("No path found, trying again")
+        print("No path found, recreating maze...")
 
 # visualize the solution using pygame.
 # white = traversable
