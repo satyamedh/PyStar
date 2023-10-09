@@ -8,11 +8,12 @@ import copy
 
 
 class AStar:
-    def __init__(self, allow_diagonal: bool = False):
+    def __init__(self, allow_diagonal: bool = False, debug: bool = False):
         self.GRID: Grid = None
         self.OPEN = []
         self.CLOSED = []
         self.ALLOW_DIAGONAL = allow_diagonal
+        self.DEBUG = debug
 
         self.solved = False
         self.solution: List[Location] = []
@@ -77,6 +78,10 @@ class AStar:
         node.CLOSED = True
 
     def pathfind(self):
+        if self.DEBUG:
+            # We show a debug message so that the user knows that the algorithm is running every x iterations
+            print("Running algorithm...")
+            counter = 0
         # Return the solution if it has already been found
         if self.solved:
             return self.solution
@@ -93,6 +98,11 @@ class AStar:
 
         # Loop until the open list is empty
         while len(self.OPEN) > 0:
+            if self.DEBUG:
+                if counter == 1000:
+                    # Print a debug message every 1000 iterations
+                    print("Still running!...")
+                    counter = 0
             # Sort the open list
             self.sort_open()
             # Get the node with the lowest f cost
@@ -126,6 +136,8 @@ class AStar:
                     # Add the neighbor to the open list if it is not already in it
                     if neighbor not in self.OPEN:
                         self.open_node(neighbor)
+            if self.DEBUG:
+                counter += 1
 
         # Raise an exception if no path was found
         raise NoPathFound("No path found")
